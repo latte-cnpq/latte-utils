@@ -1,0 +1,15 @@
+services:
+  latte-db:
+    image: postgres:14.7-alpine
+    restart: no
+    environment:
+      - POSTGRES_USER=latte_admin
+      - POSTGRES_PASSWORD=latte_admin
+      - POSTGRES_DB=latte-db
+    ports:
+      - '5432:5432'
+    volumes: 
+      - latte-db:/var/lib/postgresql/data
+volumes:
+  latte-db:
+    driver: local
