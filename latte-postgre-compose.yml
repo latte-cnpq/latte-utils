@@ -1,5 +1,5 @@
 services:
-  latte-db:
+  db:
     image: postgres:14.7-alpine
     restart: no
     environment:
@@ -7,9 +7,21 @@ services:
       - POSTGRES_PASSWORD=latte_admin
       - POSTGRES_DB=latte-db
     ports:
-      - '5432:5432'
-    volumes: 
-      - latte-db:/var/lib/postgresql/data
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+  latte:
+    build: https://github.com/latte-cnpq/latte-back.git#Grafos_instavel2
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/latte-db
+      - SPRING_DATASOURCE_USERNAME=latte_admin
+      - SPRING_DATASOURCE_PASSWORD=latte_admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
 volumes:
-  latte-db:
+  db:
     driver: local
